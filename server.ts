@@ -5,6 +5,7 @@ import cors from 'cors';
 import cookierParser from 'cookie-parser';
 import logger from '@/libraries/logger/winston';
 import router from "@/routers/router.ts";
+import {initSocket} from "@/libraries/socket/socket.ts";
 
 require('dotenv').config();
 
@@ -34,3 +35,5 @@ app.use(globalErrorHandler);
 const server = app.listen(port, () => {
     logger.info(`listening on port ${port}`);
 });
+
+initSocket(server);
