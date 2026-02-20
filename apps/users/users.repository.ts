@@ -2,14 +2,29 @@ import type {User} from "@/apps/users/users.dto.ts";
 import {prisma} from "@/databases/prisma.ts";
 import {AppError} from '@/errors/AppError';
 import errorManagement from '@/errors/errorManagement';
+import {Prisma} from "@/generated/prisma/client.ts";
 
 export async function create(user: User): Promise<User> {
-    return prisma.user.create({
-        data: {
-            username: user.username,
-            password: user.password,
-        },
-    });
+    try {
+        return await prisma.user.create({
+            data: {
+                username: user.username,
+                password: user.password,
+            },
+        });
+    } catch (error) {
+        if (error instanceof Prisma.PrismaClientKnownRequestError) {
+            if (error.code === 'P2002') {
+                throw new AppError(
+                    errorManagement.commonErrors.Conflict,
+                    'username already exists',
+                    true
+                );
+            }
+        }
+
+        throw error;
+    }
 }
 
 export async function getByUsername(username: string): Promise<User> {
