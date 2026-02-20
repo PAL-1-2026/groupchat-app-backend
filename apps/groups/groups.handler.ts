@@ -8,6 +8,12 @@ export async function join(req: Request, res: Response, next: NextFunction): Pro
     res.status(200).json({message: "group joined successfully"});
 }
 
+export async function getUserGroup(req: Request, res: Response, next: NextFunction): Promise<void> {
+    const userId = res.locals.users.userId;
+    const result = await groupService.getUserGroups(userId);
+    res.status(200).json(result);
+}
+
 export async function leave(req: Request, res: Response, next: NextFunction): Promise<void> {
     const groupId: string = req.params['groupId'] as string;
     const userId = res.locals.users.userId;

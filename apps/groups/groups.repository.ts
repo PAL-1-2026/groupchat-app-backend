@@ -20,6 +20,22 @@ export async function join(groupId: string, userId: string): Promise<void> {
     });
 }
 
+export async function getUserGroups(userId: string) {
+    const groups = await prisma.group.findMany({
+        where: {
+            users: {
+                some: { id: userId }
+            },
+            deletedAt: null,
+        },
+        orderBy: {
+            createdAt: "desc"
+        }
+    });
+
+    return groups;
+}
+
 export async function leave(groupId: string, userId: string): Promise<void> {
     try {
         await prisma.group.update({
@@ -41,3 +57,5 @@ export async function leave(groupId: string, userId: string): Promise<void> {
         throw error;
     }
 }
+
+
