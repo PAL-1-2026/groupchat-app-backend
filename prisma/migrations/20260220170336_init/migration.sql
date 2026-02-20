@@ -12,7 +12,7 @@ CREATE TABLE "User" (
 
 -- CreateTable
 CREATE TABLE "Group" (
-    "id" CHAR(36) NOT NULL,
+    "id" VARCHAR(50) NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "deletedAt" TIMESTAMP(3),
@@ -35,7 +35,7 @@ CREATE TABLE "Message" (
 
 -- CreateTable
 CREATE TABLE "_GroupToUser" (
-    "A" CHAR(36) NOT NULL,
+    "A" VARCHAR(50) NOT NULL,
     "B" CHAR(36) NOT NULL,
 
     CONSTRAINT "_GroupToUser_AB_pkey" PRIMARY KEY ("A","B")
@@ -43,6 +43,9 @@ CREATE TABLE "_GroupToUser" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Group_id_key" ON "Group"("id");
 
 -- CreateIndex
 CREATE INDEX "_GroupToUser_B_index" ON "_GroupToUser"("B");
