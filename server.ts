@@ -17,11 +17,22 @@ const port = 8080;
 app.use(bodyParser.json());
 app.use(cookierParser());
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://groupchat-kabw.akbarfikri.my.id",
+];
+
 app.use(
-    cors({
-        origin: "*",
-        credentials: true,
-    })
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
 );
 
 app.get("/", (req, res) => {

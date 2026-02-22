@@ -2,10 +2,24 @@ import { Server } from "socket.io";
 
 let io: Server;
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://groupchat-kabw.akbarfikri.my.id",
+];
+
 export function initSocket(server: any) {
-    io = new Server(server, {
-        cors: { origin: "*" }
-    });
+  io = new Server(server, {
+    cors: {
+      origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+          callback(null, true);
+        } else {
+          callback(new Error("Not allowed by CORS"));
+        }
+      },
+      credentials: true,
+    },
+  });
 
     io.on("connection", (socket) => {
         console.log("connected:", socket.id);
