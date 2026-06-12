@@ -4,7 +4,9 @@ let io: Server;
 
 const allowedOrigins = [
   "http://localhost:5173",
+  "http://localhost:3000",
   "https://groupchat-kabw.akbarfikri.my.id",
+  ...(process.env.APP_ORIGIN ? process.env.APP_ORIGIN.split(",").map((origin) => origin.trim()) : []),
 ];
 
 export function initSocket(server: any) {
